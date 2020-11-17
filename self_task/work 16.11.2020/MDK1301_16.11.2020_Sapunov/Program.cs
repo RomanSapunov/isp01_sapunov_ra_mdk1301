@@ -16,7 +16,7 @@ namespace MDK1301_16._11._2020_Sapunov
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new MainForm());
         }
     }
 }
