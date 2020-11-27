@@ -48,8 +48,8 @@
   <ItemGroup>
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Specialty.cs" />
-    <Compile Include="Services\GroupProvider.cs" />
-    <Compile Include="Services\SpecialtyProvider.cs" />
+    <Compile Include="Services\GroupsProvider.cs" />
+    <Compile Include="Services\SpecialtiesProvider.cs" />
     <Compile Include="Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

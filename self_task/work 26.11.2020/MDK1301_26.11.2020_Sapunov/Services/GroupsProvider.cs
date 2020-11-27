@@ -8,11 +8,11 @@ using MDK1301_26._11._2020_Sapunov.Models;
 
 namespace MDK1301_26._11._2020_Sapunov.Services
 {
-    class GroupProvider
+    class GroupsProvider
     {
         private SqlConnection _connection;
 
-        public GroupProvider(SqlConnection connection)
+        public GroupsProvider(SqlConnection connection)
         {
             _connection = connection;
         }
@@ -26,10 +26,57 @@ namespace MDK1301_26._11._2020_Sapunov.Services
                 _connection.Open();
 
                 var command = new SqlCommand(
-                    @"SELECT [id], [name], [year], [specialty_id] 
+                    @"SELECT [id], [name], [year], [specialty_id], [Specialties].[code], [Specialties].[name]
                     FROM [Groups]
                     LEFT JOIN [Specialties]
-                    ON [Groups.specialty_id] = [Specialties.id]"
+                    ON [Groups].[specialty_id] = [Specialties].[id]"
+                    ,
+                    _connection
+                );
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var specialty = new Specialty
+                        {
+                            Id = reader.GetInt32(3),
+                            Code = reader.GetString(4),
+                            Name = reader.GetString(5)
+                        };
+
+                        var group = new Group
+                        {
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Year = reader.GetInt32(2),
+                            SpecialtyId = reader.GetInt32(3),
+                            Specialty = specialty
+                        };
+
+                        result.Add(group);
+                    }
+                }
+
+                return result;
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public List<Group> GetAll()
+        {
+            List<Group> result = new List<Group>();
+
+            try
+            {
+                _connection.Open();
+
+                var command = new SqlCommand(
+                    @"SELECT [id], [name], [year], [specialty_id]
+                    FROM [Groups]"
                     ,
                     _connection
                 );

@@ -8,11 +8,11 @@ using MDK1301_26._11._2020_Sapunov.Models;
 
 namespace MDK1301_26._11._2020_Sapunov.Services
 {
-    public class SpecialtyProvider
+    public class SpecialtiesProvider
     {
         private SqlConnection _connection;
 
-        public SpecialtyProvider(SqlConnection connection)
+        public SpecialtiesProvider(SqlConnection connection)
         {
             _connection = connection;
         }
