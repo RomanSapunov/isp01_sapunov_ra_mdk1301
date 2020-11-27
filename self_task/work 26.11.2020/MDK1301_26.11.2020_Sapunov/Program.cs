@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MDK1301_26._11._2020_Sapunov.Views;
 
 namespace MDK1301_26._11._2020_Sapunov
 {
@@ -16,7 +17,7 @@ namespace MDK1301_26._11._2020_Sapunov
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new MainForm());
         }
     }
 }

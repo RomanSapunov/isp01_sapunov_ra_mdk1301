@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MDK1301_26._11._2020_Sapunov
+namespace MDK1301_26._11._2020_Sapunov.Views
 {
-    public partial class Form1 : Form
+    public partial class SpecialtyForm : Form
     {
-        public Form1()
+        public SpecialtyForm()
         {
             InitializeComponent();
         }
