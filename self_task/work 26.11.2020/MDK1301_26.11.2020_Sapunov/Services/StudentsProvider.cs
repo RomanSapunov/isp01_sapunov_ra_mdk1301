@@ -8,53 +8,53 @@ using MDK1301_26._11._2020_Sapunov.Models;
 
 namespace MDK1301_26._11._2020_Sapunov.Services
 {
-    class GroupsProvider
+    class StudentsProvider
     {
         private SqlConnection _connection;
 
-        public GroupsProvider(SqlConnection connection)
+        public StudentsProvider(SqlConnection connection)
         {
             _connection = connection;
         }
 
-        public List<Group> GetAllWithSpecialty()
+        public List<Student> GetAllWithGroup()
         {
-            List<Group> result = new List<Group>();
+            List<Student> result = new List<Student>();
 
             try
             {
                 _connection.Open();
 
-                var command = new SqlCommand(
-                    @"SELECT [id], [name], [year], [specialty_id], [Specialties].[code], [Specialties].[name]
-                    FROM [Groups]
-                    LEFT JOIN [Specialties]
-                    ON [Groups].[specialty_id] = [Specialties].[id]"
+                SqlCommand command = new SqlCommand(
+                    @"SELECT [id], [name], [surname], [group_id], [Groups].[name], [Groups].[year]
+                    FROM [Students]
+                    LEFT JOIN [Groups]
+                    ON [Students].[group_id] = [Groups].[id]"
                     ,
                     _connection
                 );
 
-                using (var reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader()) 
                 {
-                    while (reader.Read())
+                    while (reader.Read()) 
                     {
-                        var specialty = new Specialty
+                        var group = new Group
                         {
                             Id = reader.GetInt32(3),
-                            Code = reader.GetString(4),
-                            Name = reader.GetString(5)
+                            Name = reader.GetString(4),
+                            Year = reader.GetInt32(5)
                         };
 
-                        var group = new Group
+                        var student = new Student
                         {
                             Id = reader.GetInt32(0),
                             Name = reader.GetString(1),
-                            Year = reader.GetInt32(2),
-                            SpecialtyId = reader.GetInt32(3),
-                            Specialty = specialty
+                            Surname = reader.GetString(2),
+                            GroupId = reader.GetInt32(3),
+                            Group = group
                         };
 
-                        result.Add(group);
+                        result.Add(student);
                     }
                 }
 
@@ -66,17 +66,17 @@ namespace MDK1301_26._11._2020_Sapunov.Services
             }
         }
 
-        public List<Group> GetAll()
+        public List<Student> GetAll()
         {
-            List<Group> result = new List<Group>();
+            List<Student> result = new List<Student>();
 
             try
             {
                 _connection.Open();
 
-                var command = new SqlCommand(
-                    @"SELECT [id], [name], [year], [specialty_id]
-                    FROM [Groups]"
+                SqlCommand command = new SqlCommand(
+                    @"SELECT [id], [name], [surname], [group_id]
+                    FROM [Students]"
                     ,
                     _connection
                 );
@@ -85,15 +85,15 @@ namespace MDK1301_26._11._2020_Sapunov.Services
                 {
                     while (reader.Read())
                     {
-                        var group = new Group
+                        var student = new Student
                         {
                             Id = reader.GetInt32(0),
                             Name = reader.GetString(1),
-                            Year = reader.GetInt32(2),
-                            SpecialtyId = reader.GetInt32(3)
+                            Surname = reader.GetString(2),
+                            GroupId = reader.GetInt32(3)
                         };
 
-                        result.Add(group);
+                        result.Add(student);
                     }
                 }
 
@@ -105,7 +105,7 @@ namespace MDK1301_26._11._2020_Sapunov.Services
             }
         }
 
-        public bool Add(Group group)
+        public bool Add(Student student)
         {
             bool result = false;
 
@@ -115,17 +115,17 @@ namespace MDK1301_26._11._2020_Sapunov.Services
 
                 var command = new SqlCommand(
                     cmdText: @"
-                        INSERT INTO [Groups]
-                            ([name], [year], [specialty_id])
+                        INSERT INTO [Students]
+                            ([name], [surname], [group_id])
                         VALUES
-                            (@Name, @Year, @SpecialtyId)
+                            (@Name, @Surname, @GroupId)
                     ",
                     _connection
                 );
 
-                command.Parameters.AddWithValue("@Name", group.Name);
-                command.Parameters.AddWithValue("@Year", group.Year);
-                command.Parameters.AddWithValue("@SpecialtyId", group.SpecialtyId);
+                command.Parameters.AddWithValue("@Name", student.Name);
+                command.Parameters.AddWithValue("@Surname", student.Surname);
+                command.Parameters.AddWithValue("@GroupId", student.GroupId);
 
                 result = command.ExecuteNonQuery() > 0;
             }
@@ -137,7 +137,7 @@ namespace MDK1301_26._11._2020_Sapunov.Services
             return result;
         }
 
-        public bool Update(int id, Group group)
+        public bool Update(int id, Student student)
         {
             bool result = false;
 
@@ -147,11 +147,11 @@ namespace MDK1301_26._11._2020_Sapunov.Services
 
                 var command = new SqlCommand(
                     @"
-                        UPDATE [Groups]
+                        UPDATE [Students]
                         SET
                             [name] = @Name, 
-                            [year] = @Year,
-                            [specialty_id] = @SpecialtyId
+                            [surname] = @Surname,
+                            [group_id] = @GroupId
                         WHERE
                             [id] = @Id
                     "
@@ -160,9 +160,9 @@ namespace MDK1301_26._11._2020_Sapunov.Services
                 );
 
                 command.Parameters.AddWithValue("@Id", id);
-                command.Parameters.AddWithValue("@Name", group.Name);
-                command.Parameters.AddWithValue("@Year", group.Year);
-                command.Parameters.AddWithValue("@SpecialtyId", group.SpecialtyId);
+                command.Parameters.AddWithValue("@Name", student.Name);
+                command.Parameters.AddWithValue("@Surname", student.Surname);
+                command.Parameters.AddWithValue("@GroupId", student.GroupId);
 
                 result = command.ExecuteNonQuery() > 0;
             }
@@ -184,7 +184,7 @@ namespace MDK1301_26._11._2020_Sapunov.Services
 
                 var command = new SqlCommand(
                     @"
-                        DELETE FROM [Groups]
+                        DELETE FROM [Students]
                         WHERE [id] = @Id
                     "
                     ,
