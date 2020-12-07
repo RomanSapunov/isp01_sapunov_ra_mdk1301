@@ -26,11 +26,16 @@ namespace MDK1301_26._11._2020_Sapunov.Services
                 _connection.Open();
 
                 SqlCommand command = new SqlCommand(
-                    @"SELECT [id], [name], [surname], [group_id], [Groups].[name], [Groups].[year]
+                    @"SELECT 
+                        [Students].[id], 
+                        [Students].[name], 
+                        [Students].[surname], 
+                        [Students].[group_id], 
+                        [Groups].[name], 
+                        [Groups].[year]
                     FROM [Students]
                     LEFT JOIN [Groups]
-                    ON [Students].[group_id] = [Groups].[id]"
-                    ,
+                    ON [Students].[group_id] = [Groups].[id]",
                     _connection
                 );
 

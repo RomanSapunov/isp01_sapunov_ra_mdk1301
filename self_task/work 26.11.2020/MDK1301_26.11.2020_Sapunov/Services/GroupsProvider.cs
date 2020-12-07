@@ -26,7 +26,13 @@ namespace MDK1301_26._11._2020_Sapunov.Services
                 _connection.Open();
 
                 var command = new SqlCommand(
-                    @"SELECT [id], [name], [year], [specialty_id], [Specialties].[code], [Specialties].[name]
+                    @"SELECT 
+                        [Groups].[id], 
+                        [Groups].[name], 
+                        [Groups].[year], 
+                        [Groups].[specialty_id], 
+                        [Specialties].[code], 
+                        [Specialties].[name]
                     FROM [Groups]
                     LEFT JOIN [Specialties]
                     ON [Groups].[specialty_id] = [Specialties].[id]"
@@ -114,12 +120,13 @@ namespace MDK1301_26._11._2020_Sapunov.Services
                 _connection.Open();
 
                 var command = new SqlCommand(
-                    cmdText: @"
+                    @"
                         INSERT INTO [Groups]
                             ([name], [year], [specialty_id])
                         VALUES
                             (@Name, @Year, @SpecialtyId)
-                    ",
+                    "
+                    ,
                     _connection
                 );
 

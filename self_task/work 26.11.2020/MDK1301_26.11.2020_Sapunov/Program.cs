@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MDK1301_26._11._2020_Sapunov.Views;
+using MDK1301_26._11._2020_Sapunov.Controllers;
+using MDK1301_26._11._2020_Sapunov.Services;
 
 namespace MDK1301_26._11._2020_Sapunov
 {
@@ -17,7 +19,10 @@ namespace MDK1301_26._11._2020_Sapunov
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            SpecialtiesForm specForm = new SpecialtiesForm();
+            StorageContext context = new StorageContext();
+            _ = new SpecialtiesController(specForm, context);
+            Application.Run(specForm);
         }
     }
 }

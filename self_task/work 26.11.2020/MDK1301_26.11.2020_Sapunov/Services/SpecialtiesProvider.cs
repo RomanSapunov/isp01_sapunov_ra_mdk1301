@@ -62,12 +62,13 @@ namespace MDK1301_26._11._2020_Sapunov.Services
                 _connection.Open();
 
                 var command = new SqlCommand(
-                    cmdText: @"
+                    @"
                         INSERT INTO [Specialties]
                             ([code], [name])
                         VALUES
                             (@Code, @Name)
-                    ",
+                    "
+                    ,
                     _connection
                 );
 
